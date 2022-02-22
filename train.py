@@ -75,6 +75,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     # Directories
     w = save_dir / 'weights'  # weights dir
     colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
+
+    if not os.path.isdir(colab_w):
+        os.mkdir(colab_w)
+
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     last, best = w / 'last.pt', w / 'best.pt'
     colab_last = colab_w / 'last.pt'
