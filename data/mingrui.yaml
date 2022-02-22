@@ -1,0 +1,9 @@
+
+train: /home/justin/Models/yolov5/mingrui/coco128/images/train2017
+test: /home/justin/Models/yolov5/mingrui/coco128/images/test2017
+val: /home/justin/Models/yolov5/mingrui/coco128/images/val2017
+
+# Classes
+nc: 5  # number of classes
+names: ['car', 'truck', 'bus', 'minibus', 'cyclist']  # class names
+
