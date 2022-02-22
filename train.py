@@ -74,8 +74,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
     # Directories
     w = save_dir / 'weights'  # weights dir
+    colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     last, best = w / 'last.pt', w / 'best.pt'
+    colab_last = colab_w / 'last.pt'
 
     # Hyperparameters
     if isinstance(hyp, str):
@@ -235,9 +237,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     # Process 0
     if RANK in [-1, 0]:
         # rect normally True. Pad normally 0.5
+        # workers * 2, pad=0.5
         val_loader = create_dataloader(val_path, imgsz, batch_size // WORLD_SIZE * 2, gs, single_cls,
                                        hyp=hyp, cache=None if noval else opt.cache,
-                                       rect=True, rank=-1, workers=workers * 2, pad=0.5,
+                                       rect=opt.rect, rank=-1, workers=workers, pad=0,
                                        prefix=colorstr('val: '))[0]
 
         if not resume:
@@ -403,10 +406,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
                 # Save last, best and delete
                 torch.save(ckpt, last)
+                torch.save(ckpt, colab_last)
                 if best_fitness == fi:
                     torch.save(ckpt, best)
                 if (epoch > 0) and (opt.save_period > 0) and (epoch % opt.save_period == 0):
                     torch.save(ckpt, w / f'epoch{epoch}.pt')
+                    # For Colab training
+                    torch.save(ckpt, colab_w / f'epoch{epoch}.pt')
                 del ckpt
                 callbacks.run('on_model_save', last, epoch, final_epoch, best_fitness, fi)
 
