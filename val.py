@@ -284,8 +284,11 @@ def run(data,
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
-        anno_json = '/data_3T/justin/Data/UAV-Vehicle-Detection-Dataset/dataset4/labels/dataset4.json'
+        # anno_json = '/data_3T/justin/Data/UAV-Vehicle-Detection-Dataset/dataset4/labels/dataset4.json'
         # anno_json = '/data_3T/justin/Data/Coco2017/annotations/instances_val2017.json'
+        # anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_bw_50imgs/shapes.json'
+        anno_json = '/content/gdrive/MyDrive/Triangle_Data/Triangles_640_bw_1000imgs/shapes.json'
+
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
         LOGGER.info(f'\nEvaluating pycocotools mAP... saving {pred_json}...')
         with open(pred_json, 'w') as f:
@@ -298,7 +301,8 @@ def run(data,
 
             anno = COCO(anno_json)  # init annotations api
             pred = anno.loadRes(pred_json)  # init predictions api
-            eval = COCOeval(anno, pred, 'bbox', roc_type='score', score_thresh=0.75, iou_thresh=0.5)
+            # eval = COCOeval(anno, pred, 'bbox', roc_type='score', score_thresh=0.75, iou_thresh=0.5)
+            eval = COCOeval(anno, pred, 'bbox')
             if is_coco:
                 eval.params.imgIds = [int(Path(x).stem) for x in dataloader.dataset.img_files]  # image IDs to evaluate
             eval.evaluate()
