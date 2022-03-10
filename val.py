@@ -284,10 +284,9 @@ def run(data,
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
-        # anno_json = '/data_3T/justin/Data/UAV-Vehicle-Detection-Dataset/dataset4/labels/dataset4.json'
-        # anno_json = '/data_3T/justin/Data/Coco2017/annotations/instances_val2017.json'
         # anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_bw_50imgs/shapes.json'
-        anno_json = '/content/gdrive/MyDrive/Triangle_Data/Triangles_640_1500imgs_mod2/small/shapes.json'
+        # anno_json = '/content/gdrive/MyDrive/Triangle_Data/Triangles_640_1500imgs_mod2/small/shapes.json'
+        anno_json = f'{dataloader.dataset.path[:-7]}/shapes.json'  # Remove images from pathname
 
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
         LOGGER.info(f'\nEvaluating pycocotools mAP... saving {pred_json}...')
