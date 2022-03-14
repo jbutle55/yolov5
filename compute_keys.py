@@ -22,7 +22,7 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 def main(opt):
     data_dict = None
-    with open('data/hyps/hyp.scratch.yaml', errors='ignore') as f:
+    with open('data/hyps/hyp.scratch-low.yaml', errors='ignore') as f:
         hyp = yaml.safe_load(f)  # load hyps dict
     opt.save_dir = str(increment_path(Path(opt.project) / opt.name, exist_ok=opt.exist_ok))
     save_dir = Path(opt.save_dir)
@@ -35,7 +35,7 @@ def main(opt):
     train_path = data_dict['train']
     imgsz = 640
     batch_size = 1
-    nc = 5
+    nc = 8
     device = select_device(opt.device, batch_size=opt.batch_size)
     model = Model(opt.cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)
     gs = max(int(model.stride.max()), 32)
@@ -44,7 +44,7 @@ def main(opt):
                                               workers=8, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '), shuffle=True)
     key_store = {}
-    json_file = 'coco_all.json'
+    json_file = 'triangle_640_mod4.json'
     hessian = HessianKernelGood(scale=0).to(device)
     for img in tqdm(dataset, desc='Images Done: '):
         keys = hessian(img[0].to(device).float().unsqueeze(dim=0))

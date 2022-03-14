@@ -4,7 +4,7 @@
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
 # path: /data_3T/justin/Data/aerial-cars-yolo/aerial_yolo  # dataset root dir
 train: [/content/gdrive/MyDrive/Triangle_Data/Triangles_640_7500imgs/images]  # train images (relative to 'path')
-val: /content/gdrive/MyDrive/Triangle_Data/Triangles_640_1500imgs_mod3_gaussian/images  # val images (relative to 'path')
+val: /content/gdrive/MyDrive/Triangle_Data/Triangles_640_1500imgs/images  # val images (relative to 'path')
 
 # Classes
 nc: 5  # number of classes
