@@ -3,7 +3,7 @@
 
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
 # path: /data_3T/justin/Data/aerial-cars-yolo/aerial_yolo  # dataset root dir
-train: [/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_640_1500imgs_mod4/images]  # train images (relative to 'path')
+train: [/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_640_7500imgs_mod4/images]  # train images (relative to 'path')
 val: /Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_640_1500imgs_mod4/images  # val images (relative to 'path')
 
 # Classes
