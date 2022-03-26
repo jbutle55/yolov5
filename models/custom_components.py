@@ -440,6 +440,7 @@ class HessianKernelGood(nn.Module):
 
     def is_pixel_extrema(self, first_sub, second_sub, third_sub, threshold=0.3):
         center_pix_value = second_sub[1, 1]
+        threshold = 0.5  # TODO One tunable param
         if abs(center_pix_value) > threshold:
             if center_pix_value > 0:
                 return torch.all(center_pix_value >= first_sub) and torch.all(center_pix_value >= third_sub) and \
@@ -486,7 +487,7 @@ class HessianKernelGood(nn.Module):
         if attempt_idx >= num_attempts - 1:
             return None
         value_at_updated_extrema = cube[1, 1, 1] + 0.5 * torch.dot(cube_grad, extremum_update)
-        if abs(value_at_updated_extrema) * num_intervals >= contrast_thresh:
+        if abs(value_at_updated_extrema) * num_intervals >= contrast_thresh: # TODO One tunable param
             xy_hessian = cube_hess[:2, :2]
             xy_hessian_trace = torch.trace(xy_hessian)
             xy_hessian_det = torch.det(xy_hessian)
