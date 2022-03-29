@@ -1,0 +1,14 @@
+# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
+# UAV-Vehicle-Detection dataset
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+# path: /data_3T/justin/Data/aerial-cars-yolo/aerial_yolo  # dataset root dir
+train: [/content/gdrive/MyDrive/UAV-Vehicle-Detection-Dataset/cars_only/dataset1/images,
+        /content/gdrive/MyDrive/UAV-Vehicle-Detection-Dataset/cars_only/dataset2/images,
+        /content/gdrive/MyDrive/UAV-Vehicle-Detection-Dataset/cars_only/dataset3/images,]  # train images (relative to 'path')
+val: /content/gdrive/MyDrive/UAV-Vehicle-Detection-Dataset/cars_only/dataset4/images  # val images (relative to 'path')
+
+# Classes
+nc: 1  # number of classes
+names: ['car']  # class names
+
