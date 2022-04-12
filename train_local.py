@@ -74,15 +74,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
     # Directories
     w = save_dir / 'weights'  # weights dir
-    colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
-    colab_save_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / save_dir
-
-    if not os.path.exists(colab_w):
-        os.makedirs(colab_w)
 
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     last, best = w / 'last.pt', w / 'best.pt'
-    colab_last = colab_w / 'last.pt'
 
     # Hyperparameters
     if isinstance(hyp, str):
@@ -339,7 +333,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
             # Forward
             with amp.autocast(enabled=cuda):
-                pred = model(imgs, save_fms=colab_save_w)  # forward
+                pred = model(imgs)  # forward
                 loss, loss_items = compute_loss(pred, targets.to(device))  # loss scaled by batch_size
                 if RANK != -1:
                     loss *= WORLD_SIZE  # gradient averaged between devices in DDP mode
@@ -411,13 +405,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
                 # Save last, best and delete
                 torch.save(ckpt, last)
-                torch.save(ckpt, colab_last)
                 if best_fitness == fi:
                     torch.save(ckpt, best)
                 if (epoch > 0) and (opt.save_period > 0) and (epoch % opt.save_period == 0):
                     torch.save(ckpt, w / f'epoch{epoch}.pt')
-                    # For Colab training
-                    torch.save(ckpt, colab_w / f'epoch{epoch}.pt')
                 del ckpt
                 callbacks.run('on_model_save', last, epoch, final_epoch, best_fitness, fi)
 

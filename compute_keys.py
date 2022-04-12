@@ -5,6 +5,7 @@ from models.yolo import Model
 import os
 import json
 import sys
+import numpy as np
 from pathlib import Path
 import argparse
 import yaml
@@ -32,10 +33,10 @@ def main(opt):
 
     data_dict = check_dataset(opt.data)
 
-    train_path = data_dict['train']
+    train_path = data_dict['val']
     imgsz = 640
     batch_size = 1
-    nc = 8
+    nc = 5
     device = select_device(opt.device, batch_size=opt.batch_size)
     model = Model(opt.cfg, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)
     gs = max(int(model.stride.max()), 32)
@@ -43,17 +44,37 @@ def main(opt):
                                               hyp=hyp, augment=True, cache=opt.cache, rect=opt.rect, rank=-1,
                                               workers=8, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '), shuffle=True)
-    key_store = {}
-    json_file = 'triangle_640_mod4.json'
+    key_list = []
+    new_json_file = 'shapes_1500_keys_hessian.json'
+    old_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_640_1500imgs_mod4/shapes.json'
     hessian = HessianKernelGood(scale=0).to(device)
+
+    with open(old_json, 'r') as j:
+        jdata = json.load(j)
+
+    img_info = jdata['images']
+
     for img in tqdm(dataset, desc='Images Done: '):
+        key_store = {}
         keys = hessian(img[0].to(device).float().unsqueeze(dim=0))
         file_name = img[2].split('/')[-1]
-        key_store[file_name] = keys
+
+        for img in img_info:
+            if img['file_name'].split('/')[-1] == file_name:
+                img_id = img['id']
+                break
+
+        key_store['image_id'] = img_id  # file_name[:-4]
+
+        if len(keys) == 0:
+            keys = [list(np.zeros(132))]
+
+        key_store['keys'] = keys
+        key_list.append(key_store)
 
     print(os.getcwd())
-    with open(json_file, 'w') as j:
-        json.dump(key_store, j)
+    with open(new_json_file, 'w') as j:
+        json.dump(key_list, j)
 
     return
 

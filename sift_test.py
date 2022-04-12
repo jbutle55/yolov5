@@ -7,7 +7,7 @@ import os
 import json
 
 
-image = cv.imread('/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/aerial-cars-private/DJI_0005-0018.jpg')
+image = cv.imread('/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_7500imgs_mod4/images/image_16.png')
 gray = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
 sift = cv.SIFT_create()
 kp, des = sift.detectAndCompute(gray ,None)

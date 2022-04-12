@@ -181,7 +181,7 @@ class HessianKernelGood(nn.Module):
 
             # TODO Initially blur image?
             sigma_diff = np.sqrt(max((1.6 ** 2) - ((2 * 0.5) ** 2), 0.01))
-            init_blur = torchvision.transforms.GaussianBlur(kernel_size=5, sigma=sigma_diff)
+            init_blur = torchvision.transforms.GaussianBlur(kernel_size=5, sigma=sigma_diff)  # TODO Can change kernel size from 5
             blur_img = init_blur(images)
 
             num_octaves = int(round(np.log(min(blur_img.size()[2:4])) / np.log(2) - 1))
@@ -192,18 +192,18 @@ class HessianKernelGood(nn.Module):
             gauss_imgs = self.generate_gaussian_imgs(blur_img, num_octaves, kernels)
 
             # images = images * 255
-            gauss_images = self.gauss_blur1(images)
-            gauss_images2 = self.gauss_blur2(images)
-            gauss_images3 = self.gauss_blur3(images)
-            gauss_images4 = self.gauss_blur4(images)
-            gauss_images5 = self.gauss_blur5(images)
+            # gauss_images = self.gauss_blur1(images)
+            # gauss_images2 = self.gauss_blur2(images)
+            # gauss_images3 = self.gauss_blur3(images)
+            # gauss_images4 = self.gauss_blur4(images)
+            # gauss_images5 = self.gauss_blur5(images)
             # gauss_comb = torch.stack((gauss_images, gauss_images2, gauss_images3, gauss_images4, gauss_images5), dim=2)
-            gauss_comb = torch.cat((gauss_images, gauss_images2, gauss_images3, gauss_images4, gauss_images5), dim=0)
-            del gauss_images
-            del gauss_images2
-            del gauss_images3
-            del gauss_images4
-            del gauss_images5
+            # gauss_comb = torch.cat((gauss_images, gauss_images2, gauss_images3, gauss_images4, gauss_images5), dim=0)
+            # del gauss_images
+            # del gauss_images2
+            # del gauss_images3
+            # del gauss_images4
+            # del gauss_images5
             # image2 = gauss_images.numpy()[0][0]
             # image22 = gauss_images.numpy()[0][1]
             # plt.imshow(image2.reshape(image2.shape[0], image2.shape[1]), cmap='gray')
@@ -415,8 +415,8 @@ class HessianKernelGood(nn.Module):
             det_x = self.det_x(imgs_in_oct)
             dey_y = self.det_y(imgs_in_oct)
             det_xy = self.det_xy(imgs_in_oct)
-            det_hess = (det_x * dey_y) - (det_xy * det_xy)
-            # det_hess = self.laplacian(gauss_images)
+            det_hess = (det_x * dey_y) - (det_xy * det_xy)  # TODO
+            # det_hess = self.laplacian(imgs_in_oct)
             del det_x
             del dey_y
             del det_xy
@@ -440,7 +440,7 @@ class HessianKernelGood(nn.Module):
 
     def is_pixel_extrema(self, first_sub, second_sub, third_sub, threshold=0.3):
         center_pix_value = second_sub[1, 1]
-        threshold = 0.5  # TODO One tunable param
+        threshold = 0.04  # TODO One tunable param
         if abs(center_pix_value) > threshold:
             if center_pix_value > 0:
                 return torch.all(center_pix_value >= first_sub) and torch.all(center_pix_value >= third_sub) and \
@@ -458,6 +458,7 @@ class HessianKernelGood(nn.Module):
                        eigenvalue_ratio=10):
         extremum_outside_image = False
         image_shape = images[0].size()
+        contrast_thresh = 10  # TODO One tunable parameter
 
         for attempt_idx in range(num_attempts):
             first_img, second_img, third_img = images[image_idx-1:image_idx+2]
@@ -1329,8 +1330,8 @@ class HessianKernel(nn.Module):
             det_x = self.det_x(gauss_images[:, :, 3])
             dey_y = self.det_y(gauss_images[:, :, 3])
             det_xy = self.det_xy(gauss_images[:, :, 3])
-            det_hess = (det_x * dey_y) - (det_xy * det_xy)
-            # det_hess = self.laplacian(gauss_images)
+            # det_hess = (det_x * dey_y) - (det_xy * det_xy)
+            det_hess = self.laplacian(gauss_images)
             del det_x
             del dey_y
             del det_xy

@@ -146,6 +146,21 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path('runs/detec
             np.save(str(f.with_suffix('.npy')), x[0].cpu().numpy())  # npy save
 
 
+def feature_saving(x, module_type, stage, n=32, save_dir=Path('runs/train/exp')):
+    if 'Conv' or 'Concat' in module_type:
+        print('True')
+    else:
+        print('False')
+    if 'Conv' or 'Concat' in module_type:
+        batch, channels, height, width = x.shape  # batch, channels, height, width
+        if height > 1 and width > 1:
+            for b in range(batch):
+                for i in range(channels):
+                    f = save_dir / f"fms" / f"stage{stage}_{module_type.split('.')[-1]}_batch_{b}_feature_{i}.png"  # filename
+                    np.save(str(f.with_suffix('.npy')), x[b, i].cpu().numpy())  # npy save
+    return
+
+
 def hist2d(x, y, n=100):
     # 2d histogram used in labels.png and evolve.png
     xedges, yedges = np.linspace(x.min(), x.max(), n), np.linspace(y.min(), y.max(), n)
