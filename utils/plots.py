@@ -155,7 +155,7 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path('runs/detec
             np.save(str(f.with_suffix('.npy')), x[0].cpu().numpy())  # npy save
 
 
-def feature_saving(x, module_type, stage, n=32, save_dir=Path('runs/train/exp')):
+def feature_saving(x, module_type, stage, save_dir=Path('runs/train/exp')):
     if 'Conv' or 'Concat' in module_type:
         print('True')
     else:
@@ -166,7 +166,7 @@ def feature_saving(x, module_type, stage, n=32, save_dir=Path('runs/train/exp'))
             for b in range(batch):
                 for i in range(channels):
                     f = save_dir / f"fms" / f"stage{stage}_{module_type.split('.')[-1]}_batch_{b}_feature_{i}.png"  # filename
-                    np.save(str(f.with_suffix('.npy')), x[b, i].cpu().numpy())  # npy save
+                    np.save(str(f.with_suffix('.npy')), x[b, i].cpu().detach().numpy())  # npy save
     return
 
 
