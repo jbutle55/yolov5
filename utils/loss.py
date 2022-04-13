@@ -196,17 +196,13 @@ class ComputeLoss:
 
         for i in range(self.nl):
             anchors = self.anchors[i]
-
-            print(f'Gain shape: {gain.shape}')
-            print(f'Gain [0][0]: {gain[0][0]}')
-
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain (width,height resolution of pred layer)
 
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
-            print(f'Gain shape: {gain.shape}')
-            print(f'Gain [0][0]: {gain[0][0]}')
             if nt:
+                print(f'Gain shape: {gain.shape}')
+                print(f'Gain [0][0]: {gain[0]}')
                 print(f'Total number of targets: {t.shape}')
 
                 # Matches
