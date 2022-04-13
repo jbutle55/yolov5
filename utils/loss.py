@@ -202,7 +202,9 @@ class ComputeLoss:
             t = targets * gain  # shape(3,n,7)
             if nt:
                 print(f'Total number of targets: {t.shape}')
+                print(f'targets[0][0]: {targets[0][0]}')
                 print(f't[0][0]: {t[0][0]}')
+                print(f'gain: {gain[2:6]}')
 
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
