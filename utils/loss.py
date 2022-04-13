@@ -216,9 +216,10 @@ class ComputeLoss:
                 filt_targets = targets[j]
                 print(f'filt targets: {filt_targets.shape}')
 
-                num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024)
-                num_anchors_medium = torch.sum(1024 < filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096)
-                num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096)
+                num_anchors_small = (filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024).nonzero()
+                num_anchors_medium = ((1024 < filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640) &
+                                      (filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096)).nonzero()
+                num_anchors_large = (filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096).nonzero()
 
                 print(f'num small: {num_anchors_small}')
                 print(f'num medium: {num_anchors_medium}')
