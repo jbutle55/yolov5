@@ -156,7 +156,7 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path('runs/detec
 
 
 def feature_saving(x, module_type, stage, save_dir=Path('runs/detect/exp')):
-    if 'Conv' or 'Concat' in module_type:
+    if 'Detect' not in module_type:
         batch, channels, height, width = x.shape  # batch, channels, height, width
         if height > 1 and width > 1:
             for b in range(batch):
