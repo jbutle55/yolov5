@@ -118,8 +118,10 @@ def run(
         dt[0] += t2 - t1
 
         # Inference
+        save_fms = True
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
-        pred = model(im, augment=augment, visualize=visualize)
+        save_fms = increment_path(save_dir / Path('fms'), mkdir=True) if save_fms else False
+        pred = model(im, augment=augment, visualize=visualize, save_fms=save_fms)
         t3 = time_sync()
         dt[1] += t3 - t2
 
