@@ -201,7 +201,8 @@ class ComputeLoss:
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
             if nt:
-                print(f'Total number of targets: {t.shape}')
+                print(f'Total number of t: {t.shape}')
+                print(f'Total number of targets: {targets.shape}')
                 print(f'targets[0][0]: {targets[0][0]}')
                 print(f't[0][0]: {t[0][0]}')
                 print(f'gain: {gain[2:6]}')
@@ -213,9 +214,10 @@ class ComputeLoss:
                 t = t[j]  # filter
                 print(f'Number of matching targets: {t.shape}')
                 filt_targets = targets[j]
+                print(f'filt targets: {filt_targets.shape}')
 
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024)
-                num_anchors_medium = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096)
+                num_anchors_medium = torch.sum(1024 < filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096)
                 num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096)
 
                 print(f'num small: {num_anchors_small}')
