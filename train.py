@@ -74,11 +74,12 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
     colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
     colab_save_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / save_dir
 
-    if not os.path.exists(colab_w / 'fms'):
+    if not os.path.exists(colab_w):
         os.makedirs(colab_w)
 
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
-    os.mkdir(colab_save_w)
+    if not os.path.exists(colab_save_w / 'fms'):
+        os.mkdir(colab_save_w / 'fms')
     last, best = w / 'last.pt', w / 'best.pt'
     colab_last = colab_w / 'last.pt'
 
