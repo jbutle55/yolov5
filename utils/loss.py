@@ -202,35 +202,31 @@ class ComputeLoss:
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
             if nt:
-                print(f'Total number of t: {t.shape}')
-                print(f'Total number of targets: {targets.shape}')
-                print(f'targets[0][0]: {targets[0][0]}')
-                print(f't[0][0]: {t[0][0]}')
-                print(f'gain: {gain[2:6]}')
-                print(f'nt: {nt}')
-
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
-                print(f'Number of matching targets: {t.shape}')
                 filt_targets = targets[j]
-                print(f'filt targets: {filt_targets.shape}')
 
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024)
                 num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640) &
                                                (filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096))
                 num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096)
 
-                print(f'num small: {num_anchors_small}')
-                print(f'num medium: {num_anchors_medium}')
-                print(f'num large: {num_anchors_large}')
+                num_targets_small = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 <= 1024)
+                num_targets_medium = torch.sum((1024 < targets[..., 4] * targets[..., 5] * 640 * 640) &
+                                               (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
+                num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
 
                 with open('/content/gdrive/MyDrive/yolov5_weights/train/shapes_anchor_test/anchor_data.pickle', 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
                     pickle.dump(num_anchors_large.item(), file)
+
+                    pickle.dump(num_targets_small.item(), file)
+                    pickle.dump(num_targets_medium.item(), file)
+                    pickle.dump(num_targets_large.item(), file)
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
