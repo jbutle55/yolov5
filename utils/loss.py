@@ -201,9 +201,8 @@ class ComputeLoss:
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
             if nt:
-                print(f'Gain shape: {gain.shape}')
-                print(f'Gain [0][0]: {gain[0]}')
                 print(f'Total number of targets: {t.shape}')
+                print(f't[0][0]: {t[0][0]}')
 
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
@@ -211,6 +210,9 @@ class ComputeLoss:
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
                 print(f'Number of matching targets: {t.shape}')
+
+                num_anchors_small = torch.sum(t[..., 4] * t[..., 5] < 32)
+                print(f'num small: {num_anchors_small}')
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
