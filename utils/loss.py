@@ -8,6 +8,7 @@ import torch.nn as nn
 
 from utils.metrics import bbox_iou, wh_iou
 from utils.torch_utils import de_parallel
+import pickle
 
 
 def smooth_BCE(eps=0.1):  # https://github.com/ultralytics/yolov3/issues/238#issuecomment-598028441
@@ -206,6 +207,7 @@ class ComputeLoss:
                 print(f'targets[0][0]: {targets[0][0]}')
                 print(f't[0][0]: {t[0][0]}')
                 print(f'gain: {gain[2:6]}')
+                print(f'nt: {nt}')
 
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
@@ -224,6 +226,11 @@ class ComputeLoss:
                 print(f'num small: {num_anchors_small}')
                 print(f'num medium: {num_anchors_medium}')
                 print(f'num large: {num_anchors_large}')
+
+                with open('/content/gdrive/MyDrive/yolov5_weights/train/shapes_anchor_test/anchor_data.pickle', 'ab') as file:
+                    pickle.dump(num_anchors_small.item(), file)
+                    pickle.dump(num_anchors_medium.item(), file)
+                    pickle.dump(num_anchors_large.item(), file)
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
