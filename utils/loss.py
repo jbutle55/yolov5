@@ -212,9 +212,15 @@ class ComputeLoss:
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
                 print(f'Number of matching targets: {t.shape}')
+                filt_targets = targets[j]
 
-                num_anchors_small = torch.sum(t[..., 4] * t[..., 5] < 32)
+                num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024)
+                num_anchors_medium = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096)
+                num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096)
+
                 print(f'num small: {num_anchors_small}')
+                print(f'num medium: {num_anchors_medium}')
+                print(f'num large: {num_anchors_large}')
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
