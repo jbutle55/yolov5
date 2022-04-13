@@ -196,16 +196,25 @@ class ComputeLoss:
 
         for i in range(self.nl):
             anchors = self.anchors[i]
+
+            print(f'Gain shape: {gain.shape}')
+            print(f'Gain [0][0]: {gain[0][0]}')
+
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain (width,height resolution of pred layer)
 
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
+            print(f'Gain shape: {gain.shape}')
+            print(f'Gain [0][0]: {gain[0][0]}')
             if nt:
+                print(f'Total number of targets: {t.shape}')
+
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
+                print(f'Number of matching targets: {t.shape}')
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
