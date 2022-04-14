@@ -118,9 +118,8 @@ def run(
         dt[0] += t2 - t1
 
         # Inference
-        save_fms = True
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
-        save_fms = save_dir / 'fms'
+        save_fms = save_dir / Path(path).stem / 'fms'
         if not os.path.exists(save_fms):
             os.mkdir(save_fms)
         print(model)
