@@ -108,6 +108,7 @@ def run(
     model.warmup(imgsz=(1 if pt else bs, 3, *imgsz))  # warmup
     dt, seen = [0.0, 0.0, 0.0], 0
     for path, im, im0s, vid_cap, s in dataset:
+        print(f'Detecting Image: {path}')
         t1 = time_sync()
         im = torch.from_numpy(im).to(device)
         im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
@@ -122,7 +123,6 @@ def run(
         save_fms = save_dir / Path(path).stem / 'fms'
         if not os.path.exists(save_fms):
             os.mkdir(save_fms)
-        print(model)
         pred = model(im, augment=augment, visualize=visualize, save_fms=save_fms)
         t3 = time_sync()
         dt[1] += t3 - t2

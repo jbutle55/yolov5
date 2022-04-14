@@ -219,7 +219,7 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
 
-                with open('/content/gdrive/MyDrive/yolov5_weights/train/shapes_anchor_test/anchor_data.pickle', 'ab') as file:
+                with open('/content/gdrive/MyDrive/yolov5_weights/train/shapes_300ep_v5l_anchors/anchor_data.pickle', 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
                     pickle.dump(num_anchors_large.item(), file)
