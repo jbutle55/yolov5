@@ -120,11 +120,7 @@ def run(
         # Inference
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
         save_fms = save_dir / Path(path).stem / 'fms'
-        print('TESTING')
-        print(save_fms)
-        print(os.path.exists(save_fms))
         if not os.path.exists(save_fms):
-            print(f'Making fms dir')
             os.mkdir(save_fms)
         print(model)
         pred = model(im, augment=augment, visualize=visualize, save_fms=save_fms)
