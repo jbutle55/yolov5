@@ -157,13 +157,13 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path('runs/detec
 
 def feature_saving(x, module_type, stage, save_dir=Path('runs/detect/exp')):
     if 'Detect' not in module_type:
-        print(f'stage{stage}')
+        LOGGER.info(f'stage{stage}')
         batch, channels, height, width = x.shape  # batch, channels, height, width
         if height > 1 and width > 1:
             for b in range(batch):
                 for i in range(channels):
                     f = save_dir / f"stage{stage}_{module_type.split('.')[-1]}_batch_{b}_feature_{i}.npy"  # filename
-                    # print(f"Saving {f}")
+                    # LOGGER.info(f"Saving {f}")
                     np.save(str(f.with_suffix('.npy')), x[b, i].cpu().detach().numpy())  # npy save
     return
 
