@@ -162,7 +162,7 @@ def feature_saving(x, module_type, stage, save_dir=Path('runs/detect/exp')):
             for b in range(batch):
                 for i in range(channels):
                     f = save_dir / f"stage{stage}_{module_type.split('.')[-1]}_batch_{b}_feature_{i}.npy"  # filename
-                    # print(f"Saving {f}")
+                    print(f"Saving {f}")
                     np.save(str(f.with_suffix('.npy')), x[b, i].cpu().detach().numpy())  # npy save
     return
 
