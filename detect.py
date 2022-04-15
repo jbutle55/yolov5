@@ -122,7 +122,8 @@ def run(
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
         save_fms = save_dir / Path(path).stem / 'fms'
         if not os.path.exists(save_fms):
-            os.mkdir(save_fms)
+            os.makedirs(save_fms, exist_ok=True)
+            # os.mkdir(save_fms)
         pred = model(im, augment=augment, visualize=visualize, save_fms=save_fms)
         t3 = time_sync()
         dt[1] += t3 - t2
