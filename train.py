@@ -77,6 +77,9 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
     if not os.path.exists(colab_w):
         os.makedirs(colab_w)
 
+    g_vars = Globals()
+    g_vars.pickle_dir = f'{colab_save_w}/anchor_data.pickle'
+
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     if not os.path.exists(colab_save_w / 'fms'):
         os.mkdir(colab_save_w / 'fms')
@@ -679,6 +682,12 @@ def run(**kwargs):
         setattr(opt, k, v)
     main(opt)
     return opt
+
+
+class Globals:
+    def __init__(self):
+        self.pickle_dir = ''
+        return
 
 
 if __name__ == "__main__":

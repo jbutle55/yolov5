@@ -9,6 +9,7 @@ import torch.nn as nn
 from utils.metrics import bbox_iou, wh_iou
 from utils.torch_utils import de_parallel
 import pickle
+from train import Globals
 
 
 def smooth_BCE(eps=0.1):  # https://github.com/ultralytics/yolov3/issues/238#issuecomment-598028441
@@ -219,7 +220,9 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
 
-                with open('/content/gdrive/MyDrive/yolov5_weights/train/shapes_300ep_v5l_anchors/anchor_data.pickle', 'ab') as file:
+                g_vars = Globals()
+                print(f'using {g_vars.pickle_dir}')
+                with open(g_vars.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
                     pickle.dump(num_anchors_large.item(), file)

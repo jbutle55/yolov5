@@ -20,9 +20,9 @@ hessian = HessianKernelGood(scale=0)
 keys = hessian(tensor.float().unsqueeze(dim=0))
 # print(keys)
 
-img_dir = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_7500imgs_mod4/images'
-new_json_file = 'shapes_7500_keys_sift.json'
-old_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_7500imgs_mod4/shapes.json'
+img_dir = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_1500_mod4/no_gauss/images'
+new_json_file = 'shapes_1500_keys_sift.json'
+old_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_1500_mod4/shapes.json'
 key_list = []
 json_list = []
 
@@ -35,6 +35,7 @@ img_info = jdata['images']
 key_store = {}
 
 for img in tqdm(img_list, desc='Images Done: '):
+    key_store = {}
     if img[-3:] != 'jpg' and img[-3:] != 'png':
         continue
 
@@ -59,7 +60,8 @@ for img in tqdm(img_list, desc='Images Done: '):
             key_list.append(full_tens)
 
     for img in img_info:
-        if img['file_name'].split('/')[-1] == file_name:
+        # if img['file_name'].split('/')[-1] == file_name:
+        if img['file_name'] == file_name:
             img_id = img['id']
             break
 
