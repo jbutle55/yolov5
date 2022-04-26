@@ -51,7 +51,7 @@ from utils.general import (LOGGER, check_dataset, check_file, check_git_status, 
                            check_suffix, check_yaml, colorstr, get_latest_run, increment_path, init_seeds,
                            intersect_dicts, labels_to_class_weights, labels_to_image_weights, methods, one_cycle,
                            print_args, print_mutation, strip_optimizer)
-from utils.globals import Globals
+import utils.globals
 from utils.loggers import Loggers
 from utils.loggers.wandb.wandb_utils import check_wandb_resume
 from utils.loss import ComputeLoss
@@ -78,8 +78,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
     if not os.path.exists(colab_w):
         os.makedirs(colab_w)
 
-    g_vars = Globals()
-    g_vars.pickle_dir = f'{colab_save_w}/anchor_data.pickle'
+    utils.globals.pickle_dir = f'{colab_save_w}/anchor_data.pickle'
 
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     if not os.path.exists(colab_save_w / 'fms'):
