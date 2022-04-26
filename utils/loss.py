@@ -220,7 +220,6 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
 
-                print(f'using {utils.globals.pickle_dir}')
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
