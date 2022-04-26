@@ -39,7 +39,7 @@ if str(ROOT) not in sys.path:
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 import val  # for end-of-epoch mAP
-# from models.custom_components import KeyModel
+from models.custom_components import KeyModel
 from models.experimental import attempt_load
 from models.yolo import Model
 from utils.autoanchor import check_anchors
@@ -51,6 +51,7 @@ from utils.general import (LOGGER, check_dataset, check_file, check_git_status, 
                            check_suffix, check_yaml, colorstr, get_latest_run, increment_path, init_seeds,
                            intersect_dicts, labels_to_class_weights, labels_to_image_weights, methods, one_cycle,
                            print_args, print_mutation, strip_optimizer)
+from utils.globals import Globals
 from utils.loggers import Loggers
 from utils.loggers.wandb.wandb_utils import check_wandb_resume
 from utils.loss import ComputeLoss
@@ -682,12 +683,6 @@ def run(**kwargs):
         setattr(opt, k, v)
     main(opt)
     return opt
-
-
-class Globals:
-    def __init__(self):
-        self.pickle_dir = ''
-        return
 
 
 if __name__ == "__main__":
