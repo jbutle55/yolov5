@@ -39,7 +39,7 @@ if str(ROOT) not in sys.path:
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 import val  # for end-of-epoch mAP
-from models.custom_components import KeyModel
+# from models.custom_components import KeyModel
 from models.experimental import attempt_load
 from models.yolo import Model
 from utils.autoanchor import check_anchors
