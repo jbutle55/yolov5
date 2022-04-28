@@ -64,7 +64,7 @@ def save_one_json(predn, jdict, path, class_map):
     for p, b in zip(predn.tolist(), box.tolist()):
         jdict.append({
             'image_id': image_id,
-            'category_id': class_map[int(p[5])],
+            'category_id': class_map[int(p[5])] - 1,
             'bbox': [round(x, 3) for x in b],
             'score': round(p[4], 5)})
 
