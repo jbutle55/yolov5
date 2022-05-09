@@ -72,19 +72,19 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
 
     # Directories
     w = save_dir / 'weights'  # weights dir
-    colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
-    colab_save_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / save_dir
+    # colab_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / w
+    # colab_save_w = Path(f'/content/gdrive/MyDrive/yolov5_weights') / save_dir
 
-    if not os.path.exists(colab_w):
-        os.makedirs(colab_w)
+    # if not os.path.exists(colab_w):
+    #     os.makedirs(colab_w)
 
-    utils.globals.pickle_dir = f'{colab_save_w}/anchor_data.pickle'
+    # utils.globals.pickle_dir = f'{colab_save_w}/anchor_data.pickle'
 
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
-    if not os.path.exists(colab_save_w / 'fms'):
-        os.mkdir(colab_save_w / 'fms')
+    # if not os.path.exists(colab_save_w / 'fms'):
+    #     os.mkdir(colab_save_w / 'fms')
     last, best = w / 'last.pt', w / 'best.pt'
-    colab_last = colab_w / 'last.pt'
+    # colab_last = colab_w / 'last.pt'
 
     # Hyperparameters
     if isinstance(hyp, str):
@@ -434,13 +434,13 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
 
                 # Save last, best and delete
                 torch.save(ckpt, last)
-                torch.save(ckpt, colab_last)
+                # torch.save(ckpt, colab_last)
                 if best_fitness == fi:
                     torch.save(ckpt, best)
                 if (epoch > 0) and (opt.save_period > 0) and (epoch % opt.save_period == 0):
                     torch.save(ckpt, w / f'epoch{epoch}.pt')
                     # For Colab training
-                    torch.save(ckpt, colab_w / f'epoch{epoch}.pt')
+                    # torch.save(ckpt, colab_w / f'epoch{epoch}.pt')
                 del ckpt
                 callbacks.run('on_model_save', last, epoch, final_epoch, best_fitness, fi)
 
