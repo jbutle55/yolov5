@@ -3,10 +3,10 @@
 
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
 # path: /data_3T/justin/Data/aerial-cars-yolo/aerial_yolo  # dataset root dir
-train: [uav-detect/cars-only/dataset1/images/,
-        uav-detect/cars-only/dataset2/images/,
-        uav-detect/cars-only/dataset3/images/,]  # train images (relative to 'path')
-val: uav-detect/cars-only/dataset4/images/  # val images (relative to 'path')
+train: [/home/justin.butler1/Data/uav-detect/cars-only/dataset1/images/,
+        /home/justin.butler1/Data/uav-detect/cars-only/dataset2/images/,
+        /home/justin.butler1/Data/uav-detect/cars-only/dataset3/images/,]  # train images (relative to 'path')
+val: /home/justin.butler1/Data/uav-detect/cars-only/dataset4/images/  # val images (relative to 'path')
 
 # Classes
 nc: 1  # number of classes
