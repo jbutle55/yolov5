@@ -9,6 +9,7 @@ import torch.nn as nn
 from utils.metrics import bbox_iou, wh_iou
 from utils.torch_utils import de_parallel
 import pickle
+import os
 import utils.globals
 
 
@@ -220,6 +221,7 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
 
+                print(os.getcwd())
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
