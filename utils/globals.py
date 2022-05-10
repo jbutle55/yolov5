@@ -1,2 +1,2 @@
 
-pickle_dir = 'anchors.pickle'
+pickle_dir = ''
