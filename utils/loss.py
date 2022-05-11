@@ -191,6 +191,11 @@ class ComputeLoss:
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
         print(f'targets 2 shape: {targets.shape}')
 
+        # TODO Tune values - Non-normalized
+        max_value = 0.3  # Max output value of sigmoid function (a)
+        # k_val = 0.05  # The larger the value, the steeper the function (Sigmoid only)
+        x_o = 1000  # Moves the center point of function to x_o (b)
+        std = 500  # Standard dev. of Gaussian (width or c)
 
         g = 0.5  # bias
         off = torch.tensor(
@@ -222,8 +227,15 @@ class ComputeLoss:
 
                 print(f'anchors[:, None] shape: {anchors[:, None].shape}')
                 gt_areas = t[..., 4] * t[..., 5]
+
+                # Gaussian Function
+                iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
                 print(f'gt_areas: {gt_areas}')
                 print(f' gt areas shape: {gt_areas.shape}')
+                print(f'iou updates shape: {iou_updates}')
+
+                r_inflate = r * iou_updates
+                print(f'r inflate shape: {r_inflate.shape}')
 
                 print(f'r[0]: {r[0]}')
                 print(f'r shape: {r.shape}')
