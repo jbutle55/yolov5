@@ -177,11 +177,12 @@ class ComputeLoss:
 
         return (lbox + lobj + lcls) * bs, torch.cat((lbox, lobj, lcls)).detach()
 
-    def build_targets(self, p, targets):
+    def build_targets(self, p, targets, img_size=None):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
 
         print(f'p len: {len(p)}')
         print(f'p[0] shape: {p[0].shape}')
+        print(f'p[1] shape: {p[1].shape}')
         print(f'targets shape: {targets.shape}')
 
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
@@ -226,7 +227,10 @@ class ComputeLoss:
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
 
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
-                gt_areas = (t[..., 4] * t[..., 5]).unsqueeze(-1)
+                if img_size is not None:
+                    print(f'img size: {img_size}')
+                    print(img_size.shape)
+                    gt_areas = ((targets[..., 4] * img_size[0]) * (targets[..., 5] * img_size[1])).unsqueeze(-1)
 
                 # Gaussian Function
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
