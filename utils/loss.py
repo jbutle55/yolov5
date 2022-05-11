@@ -179,11 +179,18 @@ class ComputeLoss:
 
     def build_targets(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
+
+        print(f'p: {p}')
+        print(f'p shape: {p.shape}')
+        print(f'targets shape: {targets.shape}')
+
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
         tcls, tbox, indices, anch = [], [], [], []
         gain = torch.ones(7, device=self.device)  # normalized to gridspace gain
         ai = torch.arange(na, device=self.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
+        print(f'targets 2 shape: {targets.shape}')
+
 
         g = 0.5  # bias
         off = torch.tensor(
@@ -199,13 +206,19 @@ class ComputeLoss:
 
         for i in range(self.nl):
             anchors = self.anchors[i]
+            print(f'anchors: {anchors}')
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain (width,height resolution of pred layer)
+            print(f'gain: {gain}')
 
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
+            print(f't: {t}')
+            print(f't shape: {t.shape}')
             if nt:
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
+                print(f'r: {r}')
+                print(f'r shape: {r.shape}')
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter

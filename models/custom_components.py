@@ -2338,11 +2338,15 @@ class ComputeLossIoU(ComputeLoss):
 
     def build_targets(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
+        print(f'p: {p}')
+        print(f'p shape: {p.shape}')
+        print(f'targets shape: {targets.shape}')
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
         tcls, tbox, indices, anch = [], [], [], []
         gain = torch.ones(7, device=targets.device)  # normalized to gridspace gain
         ai = torch.arange(na, device=targets.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[:, :, None]), 2)  # append anchor indices
+        print(f'targets 2 shape: {targets.shape}')
 
         g = 0.5  # bias
         off = torch.tensor([[0, 0],
@@ -2350,15 +2354,36 @@ class ComputeLossIoU(ComputeLoss):
                             # [1, 1], [1, -1], [-1, 1], [-1, -1],  # jk,jm,lk,lm
                             ], device=targets.device).float() * g  # offsets
 
+        # TODO Tune values - Non-normalized
+        max_value = 0.3  # Max output value of sigmoid function (a)
+        # k_val = 0.05  # The larger the value, the steeper the function (Sigmoid only)
+        x_o = 1000  # Moves the center point of function to x_o (b)
+        std = 500  # Standard dev. of Gaussian (width or c)
+
+        # gt_areas = targets[:, 4] * targets[:, 5]
+
+        # Gaussian Function
+        # iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
+
         for i in range(self.nl):
+
             anchors = self.anchors[i]
+            print(f'anchors: {anchors}')
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
+            print(f'gain: {gain}')
 
             # Match targets to anchors
             t = targets * gain
+            print(f't: {t}')
+            print(f't shape: {t.shape}')
+
             if nt:
                 # Matches
                 r = t[:, :, 4:6] / anchors[:, None]  # wh ratio
+
+                print(f'r: {r}')
+                print(f'r shape: {r.shape}')
+
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
