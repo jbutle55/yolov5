@@ -232,9 +232,9 @@ class ComputeLoss:
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
                 print(f'gt_areas: {gt_areas}')
                 print(f' gt areas shape: {gt_areas.shape}')
-                print(f'iou updates shape: {iou_updates}')
+                print(f'iou updates shape: {iou_updates.shape}')
 
-                r_inflate = r * iou_updates
+                r_inflate = r * iou_updates[:, None]
                 print(f'r inflate shape: {r_inflate.shape}')
 
                 print(f'r[0]: {r[0]}')
