@@ -225,24 +225,22 @@ class ComputeLoss:
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
 
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
-                gt_areas = (t[..., 4] * t[..., 5]).unsqueeze(1)
+                gt_areas = (t[..., 4] * t[..., 5]).unsqueeze(-1)
 
                 # Gaussian Function
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
-                # print(f'gt_areas: {gt_areas}')
-                # print(f' gt areas shape: {gt_areas.shape}')
-                # print(f'iou updates shape: {iou_updates.shape}')
+                print(f' gt areas shape: {gt_areas.shape}')
+                print(f'iou updates shape: {iou_updates.shape}')
                 print(f'r: {r}')
                 print(f'r shape: {r.shape}')
 
                 r_inflate = r * iou_updates[..., None]
-                print(f'r inflate {r_inflate}')
                 print(f'r inflate shape: {r_inflate.shape}')
 
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 j_test = torch.max(r_inflate, 1 / r_inflate).max(2)[0] < self.hyp['anchor_t']  # compare
-                print(j)
-                print(j_test)
+                print(f'j shape: {j.shape}')
+                print(f'j test shape {j_test.shape}')
 
                 j_comp = torch.logical_and(j, j_test)
                 print(f'j comp: {j_comp}')
