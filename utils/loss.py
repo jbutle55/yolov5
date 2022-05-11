@@ -229,12 +229,12 @@ class ComputeLoss:
 
                 # Gaussian Function
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
-                print(f' gt areas shape: {gt_areas.shape}')
+                print(f'gt areas shape: {gt_areas.shape}')
                 print(f'iou updates shape: {iou_updates.shape}')
                 print(f'r: {r}')
                 print(f'r shape: {r.shape}')
 
-                r_inflate = r * iou_updates[..., None]
+                r_inflate = r * iou_updates
                 print(f'r inflate shape: {r_inflate.shape}')
 
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
