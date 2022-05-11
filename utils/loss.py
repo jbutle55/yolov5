@@ -211,7 +211,7 @@ class ComputeLoss:
 
         for i in range(self.nl):
             anchors = self.anchors[i]
-            print(f'anchors: {anchors}')
+            print(f'anchors shape: {anchors.shape}')
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain (width,height resolution of pred layer)
             print(f'gain: {gain}')
 
@@ -219,26 +219,25 @@ class ComputeLoss:
             t = targets * gain  # shape(3,n,7)
             print(f't[0][0]: {t[0][0]}')
             print(f't shape: {t.shape}')
-            print(f't[..., 4:6] = {t[..., 4:6]}')
-            print(f't[..., 4:6] shape: {t[..., 4:6].shape}')
+            print(f't[..., 4:6] shape: {t[..., 4:6].shape}')  # 3, 64, 2
             if nt:
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
 
-                print(f'anchors[:, None] shape: {anchors[:, None].shape}')
-                gt_areas = t[..., 4] * t[..., 5]
+                print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
+                gt_areas = (t[..., 4] * t[..., 5]).unsqueeze(1)
 
                 # Gaussian Function
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
                 print(f'gt_areas: {gt_areas}')
                 print(f' gt areas shape: {gt_areas.shape}')
                 print(f'iou updates shape: {iou_updates.shape}')
-
-                r_inflate = r * iou_updates[:, None]
-                print(f'r inflate shape: {r_inflate.shape}')
-
                 print(f'r[0]: {r[0]}')
                 print(f'r shape: {r.shape}')
+
+                r_inflate = r * iou_updates[..., None]
+                print(f'r inflate shape: {r_inflate.shape}')
+
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 print(f'j shape: {j.shape}')
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
