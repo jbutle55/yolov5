@@ -341,6 +341,8 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255  # uint8 to float32, 0-255 to 0.0-1.0
 
+            print(f'images: {imgs}')
+
             # Warmup
             if ni <= nw:
                 xi = [0, nw]  # x interp
