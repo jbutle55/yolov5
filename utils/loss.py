@@ -180,8 +180,8 @@ class ComputeLoss:
     def build_targets(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
 
-        print(f'p: {p}')
-        print(f'p shape: {p.shape}')
+        print(f'p len: {len(p)}')
+        print(f'p[0] shape: {p[0].shape}')
         print(f'targets shape: {targets.shape}')
 
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
