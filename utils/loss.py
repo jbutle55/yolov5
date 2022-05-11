@@ -229,7 +229,6 @@ class ComputeLoss:
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
                 if img_size is not None:
                     print(f'img size: {img_size}')
-                    print(img_size.shape)
                     gt_areas = ((targets[..., 4] * img_size[0]) * (targets[..., 5] * img_size[1])).unsqueeze(-1)
 
                 # Gaussian Function

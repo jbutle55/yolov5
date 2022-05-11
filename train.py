@@ -348,7 +348,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             print(f'targets: {targets}')
             print(targets.shape)
 
-            img_dims = imgs.shape[1:3]
+            img_dims = imgs.shape[2:4]
             print(img_dims)
 
             # Warmup
