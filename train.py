@@ -342,6 +342,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             imgs = imgs.to(device, non_blocking=True).float() / 255  # uint8 to float32, 0-255 to 0.0-1.0
 
             print(f'images: {imgs}')
+            print(f'targets: {targets}')
 
             # Warmup
             if ni <= nw:
