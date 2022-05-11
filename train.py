@@ -233,6 +233,8 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
         LOGGER.info('Using SyncBatchNorm()')
 
+    print(f'imgsz: {imgsz}')
+
     # Trainloader
     train_loader, dataset = create_dataloader(train_path,
                                               imgsz,
@@ -342,6 +344,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             imgs = imgs.to(device, non_blocking=True).float() / 255  # uint8 to float32, 0-255 to 0.0-1.0
 
             print(f'images: {paths}')
+            print(imgs.shape)
             print(f'targets: {targets}')
 
             # Warmup
