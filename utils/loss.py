@@ -241,7 +241,10 @@ class ComputeLoss:
 
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
                 j_test = torch.max(r_inflate, 1 / r_inflate).max(2)[0] < self.hyp['anchor_t']  # compare
-                j_comp = j and j_test
+                print(j)
+                print(j_test)
+
+                j_comp = torch.logical_and(j, j_test)
                 print(f'j comp: {j_comp}')
 
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
