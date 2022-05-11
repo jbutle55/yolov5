@@ -343,13 +343,12 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255  # uint8 to float32, 0-255 to 0.0-1.0
 
-            print(f'images: {paths}')
-            print(imgs.shape)
-            print(f'targets: {targets}')
-            print(targets.shape)
+            # print(f'images: {paths}')
+            # print(imgs.shape)
+            # print(f'targets: {targets}')
+            # print(targets.shape)
 
             img_dims = imgs.shape[2:4]
-            print(img_dims)
 
             # Warmup
             if ni <= nw:
@@ -401,7 +400,6 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
                 if callbacks.stop_training:
                     return
             # end batch ------------------------------------------------------------------------------------------------
-            return  # TODO Temp debugging
 
         # Scheduler
         lr = [x['lr'] for x in optimizer.param_groups]  # for loggers

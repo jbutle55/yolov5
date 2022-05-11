@@ -179,18 +179,11 @@ class ComputeLoss:
 
     def build_targets(self, p, targets, img_size=None):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
-
-        print(f'p len: {len(p)}')
-        print(f'p[0] shape: {p[0].shape}')
-        print(f'p[1] shape: {p[1].shape}')
-        print(f'targets shape: {targets.shape}')
-
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
         tcls, tbox, indices, anch = [], [], [], []
         gain = torch.ones(7, device=self.device)  # normalized to gridspace gain
         ai = torch.arange(na, device=self.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
-        print(f'targets 2 shape: {targets.shape}')
 
         # TODO Tune values - Non-normalized
         max_value = 0.3  # Max output value of sigmoid function (a)
@@ -214,12 +207,12 @@ class ComputeLoss:
             anchors = self.anchors[i]
             # print(f'anchors shape: {anchors.shape}')
             gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain (width,height resolution of pred layer)
-            print(f'gain: {gain}')
+            # print(f'gain: {gain}')
 
             # Match targets to anchors
             t = targets * gain  # shape(3,n,7)
-            print(f't: {t}')
-            print(f'targets: {targets}')
+            # print(f't: {t}')
+            # print(f'targets: {targets}')
             # print(f't shape: {t.shape}')
             # print(f't[..., 4:6] shape: {t[..., 4:6].shape}')  # 3, 64, 2
             if nt:
@@ -228,43 +221,42 @@ class ComputeLoss:
 
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
                 if img_size is not None:
-                    print(f'img size: {img_size}')
+                    # print(f'img size: {img_size}')
                     gt_areas = ((targets[..., 4] * img_size[0]) * (targets[..., 5] * img_size[1])).unsqueeze(-1)
 
                 # Gaussian Function
                 iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
                 # print(f'gt areas shape: {gt_areas.shape}')
-                print(f'gt areas: {gt_areas}')
+                # print(f'gt areas: {gt_areas}')
                 # print(f'iou updates shape: {iou_updates.shape}')
-                print(f' iou updates: {iou_updates}')
-                print(f'r: {r}')
+                # print(f' iou updates: {iou_updates}')
+                # print(f'r: {r}')
                 # print(f'r shape: {r.shape}')
 
-                r_inflate = r * iou_updates
+                r = r * iou_updates  # TODO Disable for no iou/ratio inflation
                 # print(f'r inflate shape: {r_inflate.shape}')
-                print(f'r inflate: {r_inflate}')
+                # print(f'r inflate: {r_inflate}')
 
                 j = torch.max(r, 1 / r).max(2)[0] < self.hyp['anchor_t']  # compare
-                j_test = torch.max(r_inflate, 1 / r_inflate).max(2)[0] < self.hyp['anchor_t']  # compare
-                print(f'j shape: {j.shape}')
-                print(f'j test shape {j_test.shape}')
-
-                j_comp = torch.logical_and(j, j_test)
-                print(f'j comp: {j_comp}')
+                # j_test = torch.max(r_inflate, 1 / r_inflate).max(2)[0] < self.hyp['anchor_t']  # compare
+                # print(f'j shape: {j.shape}')
+                # print(f'j test shape {j_test.shape}')
+                # j_comp = torch.logical_and(j, j_test)
+                # print(f'j comp: {j_comp}')
 
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
                 filt_targets = targets[j]
 
-                num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 1024)
-                num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640) &
-                                               (filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 <= 4096))
-                num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * 640 * 640 > 4096)
+                num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 1024)
+                num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1]) &
+                                               (filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 4096))
+                num_anchors_large = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
-                num_targets_small = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 <= 1024)
-                num_targets_medium = torch.sum((1024 < targets[..., 4] * targets[..., 5] * 640 * 640) &
-                                               (targets[..., 4] * targets[..., 5] * 640 * 640 <= 4096))
-                num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * 640 * 640 > 4096)
+                num_targets_small = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024)
+                num_targets_medium = torch.sum((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
+                                               (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
+                num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
