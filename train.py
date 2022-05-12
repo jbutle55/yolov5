@@ -485,7 +485,7 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
                                             single_cls=single_cls,
                                             dataloader=val_loader,
                                             save_dir=save_dir,
-                                            save_json=is_coco,
+                                            save_json=True,  # is_coco,
                                             verbose=True,
                                             plots=True,
                                             callbacks=callbacks,
