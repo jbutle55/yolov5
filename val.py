@@ -205,13 +205,15 @@ def run(
         t2 = time_sync()
         dt[0] += t2 - t1
 
+        img_dims = im.shape[2:4]
+
         # Inference
         out, train_out = model(im) if training else model(im, augment=augment, val=True)  # inference, loss outputs
         dt[1] += time_sync() - t2
 
         # Loss
         if compute_loss:
-            loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
+            loss += compute_loss([x.float() for x in train_out], targets, img_size=img_dims)[1]  # box, obj, cls
 
         # NMS
         targets[:, 2:] *= torch.tensor((width, height, width, height), device=device)  # to pixels
