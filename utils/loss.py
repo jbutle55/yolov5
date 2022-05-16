@@ -226,7 +226,7 @@ class ComputeLoss:
 
                     # Gaussian Function
                     # TODO Enable for iou inflation
-                    # iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
+                    iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
 
                     # print(f'gt areas shape: {gt_areas.shape}')
                     # print(f'gt areas: {gt_areas}')
