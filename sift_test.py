@@ -7,22 +7,22 @@ import os
 import json
 
 
-image = cv.imread('/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_7500imgs_mod4/images/image_16.png')
-gray = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
-sift = cv.SIFT_create()
-kp, des = sift.detectAndCompute(gray ,None)
-img = cv.drawKeypoints(gray, kp, image)
-cv.imwrite('sift_keypoints.jpg', img)
+# image = cv.imread('/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_640_7500imgs_mod4/images/image_16.png')
+# gray = cv.cvtColor(image, cv.COLOR_RGB2GRAY)
+# sift = cv.SIFT_create()
+# kp, des = sift.detectAndCompute(gray ,None)
+# img = cv.drawKeypoints(gray, kp, image)
+# cv.imwrite('sift_keypoints.jpg', img)
 
-image = np.transpose(image, (2,0,1))
-tensor = torch.from_numpy(image)
-hessian = HessianKernelGood(scale=0)
-keys = hessian(tensor.float().unsqueeze(dim=0))
+# image = np.transpose(image, (2,0,1))
+# tensor = torch.from_numpy(image)
+# hessian = HessianKernelGood(scale=0)
+# keys = hessian(tensor.float().unsqueeze(dim=0))
 # print(keys)
 
-img_dir = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_1500_mod4/no_gauss/images'
-new_json_file = 'shapes_1500_keys_sift.json'
-old_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Shapes_1500_mod4/shapes.json'
+img_dir = '/home/justin.butler1/Data/coco/train2017/images'
+new_json_file = 'coco_train_keys_sift.json'
+old_json = '/home/justin.butler1/Data/coco/annotations/instances_train2017.json'
 key_list = []
 json_list = []
 
