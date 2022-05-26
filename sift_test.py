@@ -21,7 +21,7 @@ import json
 # print(keys)
 
 img_dir = '/home/justin.butler1/Data/uav-detect/cars-only/dataset1/images'
-new_json_file = 'dataset1_cars_keys_sift.json'
+new_json_file = '/home/justin.butler1/Data/uav-detect/cars-only/dataset1/dataset1_cars_keys_sift.json'
 old_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset1/dataset1_x1y1wh.json'
 key_list = []
 json_list = []
