@@ -20,9 +20,9 @@ import json
 # keys = hessian(tensor.float().unsqueeze(dim=0))
 # print(keys)
 
-img_dir = '/home/justin.butler1/Data/coco/train2017'
-new_json_file = 'coco_train_keys_sift.json'
-old_json = '/home/justin.butler1/Data/coco/annotations/instances_train2017.json'
+img_dir = '/home/justin.butler1/Data/uav-detect/cars-only/dataset1/images'
+new_json_file = 'dataset1_cars_keys_sift.json'
+old_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset1/dataset1_x1y1wh.json'
 key_list = []
 json_list = []
 
