@@ -304,8 +304,8 @@ def run(
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
         # anno_json = '/home/justin.butler1/Data/shapes/Shapes_1500imgs_small/gauss_001/shapes.json'
-        anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
-        # anno_json = f'{dataloader.dataset.path[:-7]}/shapes.json'  # Remove images from pathname
+        # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
+        anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/valid/cars_only_boxmode_wkeys.json'  # Remove images from pathname
         print(f'Using annotation file: {anno_json}')
 
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
