@@ -186,7 +186,7 @@ class ComputeLoss:
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
 
         # TODO Tune values - Non-normalized
-        max_value = 0.4  # Max output value of sigmoid function (a)
+        max_value = 0.3  # Max output value of sigmoid function (a)
         # k_val = 0.05  # The larger the value, the steeper the function (Sigmoid only)
         x_o = 1000  # Moves the center point of function to x_o (b)
         std = 500  # Standard dev. of Gaussian (width or c)
@@ -235,7 +235,7 @@ class ComputeLoss:
                     # print(f'r: {r}')
                     # print(f'r shape: {r.shape}')
 
-                    # r = r * iou_updates  # TODO Disable for no iou/ratio inflation
+                    r = r * iou_updates  # TODO Disable for no iou/ratio inflation
                     # print(f'r inflate shape: {r_inflate.shape}')
                     # print(f'r inflate: {r_inflate}')
 
