@@ -5,7 +5,7 @@
 # path: /data_3T/justin/Data/aerial-cars-yolo/aerial_yolo  # dataset root dir
 train: [/home/justin.butler1/Data/uav-detect/cars-only/dataset1/images/,
         /home/justin.butler1/Data/uav-detect/cars-only/dataset2/images/,]  # train images (relative to 'path')
-val: [/home/justin.butler1/Data/uav-detect/cars-only/dataset4/images/,]  # val images (relative to 'path')
+val: [/home/justin.butler1/Data/uav-detect/cars-only/dataset3/images/,]  # val images (relative to 'path')
 
 # Classes
 nc: 1  # number of classes
