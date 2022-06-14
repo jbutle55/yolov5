@@ -157,7 +157,7 @@ def run(
     model.eval()
     cuda = device.type != 'cpu'
     is_coco = isinstance(data.get('val'), str) and data['val'].endswith('coco/val2017.txt')  # COCO dataset
-    is_coco = False
+    # is_coco = False
     nc = 1 if single_cls else int(data['nc'])  # number of classes
     iouv = torch.linspace(0.5, 0.95, 10, device=device)  # iou vector for mAP@0.5:0.95
     niou = iouv.numel()
@@ -303,10 +303,10 @@ def run(
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
-        # anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
+        anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
         # anno_json = '/home/justin.butler1/Data/shapes/Shapes_1500imgs/shapes.json'
         # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
-        anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
+        # anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
         print(f'Using annotation file: {anno_json}')
 
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
