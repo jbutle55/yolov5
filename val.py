@@ -157,7 +157,6 @@ def run(
     model.eval()
     cuda = device.type != 'cpu'
     is_coco = isinstance(data.get('val'), str) and data['val'].endswith('coco/val2017.txt')  # COCO dataset
-    print(is_coco)
     is_coco = True
     # is_coco = False
     nc = 1 if single_cls else int(data['nc'])  # number of classes
@@ -305,8 +304,8 @@ def run(
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
-        anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
-        # anno_json = '/home/justin.butler1/Data/shapes/Shapes_1500imgs/shapes.json'
+        # anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
+        anno_json = '/home/justin.butler1/Data/shapes/Triangles_1500imgs_small/shapes.json'
         # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
         # anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
         print(f'Using annotation file: {anno_json}')
