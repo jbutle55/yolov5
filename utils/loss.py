@@ -254,14 +254,16 @@ class ComputeLoss:
                 # print(f'j test shape {j_test.shape}')
                 # j_comp = torch.logical_and(j, j_test)
                 # print(f'j comp: {j_comp}')
+                print(f'j values: {torch.max(r, 1 / r).max(2)[0]}')
+                print(torch.max(r, 1 / r).max(2)[0].shape)
 
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
                 filt_targets = targets[j]
 
                 # print('test')
-                # print(targets.shape)
-                # print(filt_targets.shape)
+                print(targets.shape)
+                print(filt_targets.shape)
 
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 1024)
                 num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1]) &
