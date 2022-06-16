@@ -276,10 +276,10 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_medium
                 large_targets_ratio = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_large
 
-                small_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
-                medium_targets_max = torch.max(torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
-                                                             (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0])
-                large_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
+                small_targets_max = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_small
+                medium_targets_max = torch.sum(torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
+                                                             (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_medium
+                large_targets_max = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_large
 
                 small_targets_min = torch.sum(
                     torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) *
@@ -296,9 +296,9 @@ class ComputeLoss:
                 # print(f'med: {medium_targets_ratio}')
                 # print(f'large: {large_targets_ratio}')
 
-                print(f'small: {small_targets_min}')
-                print(f'med: {medium_targets_min}')
-                print(f'large: {large_targets_min}')
+                # print(f'small: {small_targets_min}')
+                # print(f'med: {medium_targets_min}')
+                # print(f'large: {large_targets_min}')
 
                 # print(f'img size: {img_size}')
                 # print(f'targets shape: {targets.shape}')
@@ -358,7 +358,5 @@ class ComputeLoss:
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
-
-        exit()
 
         return tcls, tbox, indices, anch
