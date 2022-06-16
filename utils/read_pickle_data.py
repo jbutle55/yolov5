@@ -63,6 +63,7 @@ large_zero_values = []
 
 for item in data:
     print(item)
+    print(count)
     if count == 0:
         small_pos_match.append(item)
         count += 1
@@ -82,7 +83,7 @@ for item in data:
         num_large_gt.append(item)
         count += 1
 
-    if count == 5:
+    if count == 6:
         count = 0
 
 # Totals
