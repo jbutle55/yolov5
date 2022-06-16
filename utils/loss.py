@@ -257,6 +257,11 @@ class ComputeLoss:
                 t = t[j]  # filter
                 filt_targets = targets[j]
 
+                print('test')
+                print(targets.shape)
+                print(filt_targets.shape)
+
+
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 1024)
                 num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1]) &
                                                (filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 4096))
