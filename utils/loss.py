@@ -178,6 +178,12 @@ class ComputeLoss:
         return (lbox + lobj + lcls) * bs, torch.cat((lbox, lobj, lcls)).detach()
 
     def build_targets(self, p, targets, img_size=None):
+        print('p')
+        print(p)
+
+        print(f'targets')
+        print(targets)
+
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
         tcls, tbox, indices, anch = [], [], [], []
@@ -185,7 +191,6 @@ class ComputeLoss:
         ai = torch.arange(na, device=self.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
         print(f'nt: {nt}')
-
 
         # TODO Tune values - Non-normalized
         max_value = 0.3  # Max output value of sigmoid function (a)
@@ -306,5 +311,7 @@ class ComputeLoss:
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
+
+        exit()  # debugging
 
         return tcls, tbox, indices, anch
