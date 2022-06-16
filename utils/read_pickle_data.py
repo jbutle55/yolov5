@@ -83,7 +83,35 @@ for item in data:
         num_large_gt.append(item)
         count += 1
 
-    if count == 6:
+    elif count == 6:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 7:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 8:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 9:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 10:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 11:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 12:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 13:
+        num_large_gt.append(item)
+        count += 1
+    elif count == 14:
+        num_large_gt.append(item)
+        count += 1
+
+    if count == 15:
         count = 0
 
 # Totals
