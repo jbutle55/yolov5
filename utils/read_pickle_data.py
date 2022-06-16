@@ -59,6 +59,18 @@ small_zero_values = []
 medium_zero_values = []
 large_zero_values = []
 
+small_avg_ratio = []
+med_avg_ratio = []
+large_avg_ratio = []
+
+small_max_ratio = []
+med_max_ratio = []
+large_max_ratio = []
+
+small_min_ratio = []
+med_min_ratio = []
+large_min_ratio = []
+
 # print(data)
 
 for item in data:
@@ -109,6 +121,7 @@ for item in data:
         count += 1
     elif count == 14:
         large_min_ratio.append(item)
+        print(f'Here')
         count += 1
 
     if count == 15:

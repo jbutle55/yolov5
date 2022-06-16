@@ -281,16 +281,16 @@ class ComputeLoss:
                                                              (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0])
                 large_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
 
-                small_targets_min = torch.max(
+                small_targets_min = torch.sum(
                     torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) *
-                    torch.min(r, 1 / r).max(2)[0])
-                medium_targets_min = torch.max(
+                    torch.min(r, 1 / r).min(2)[0]) / num_targets_small
+                medium_targets_min = torch.sum(
                     torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
                                 (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) *
-                    torch.min(r, 1 / r).max(2)[0])
-                large_targets_min = torch.max(
+                    torch.min(r, 1 / r).min(2)[0]) / num_targets_medium
+                large_targets_min = torch.sum(
                     torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) *
-                    torch.min(r, 1 / r).max(2)[0])
+                    torch.min(r, 1 / r).min(2)[0]) / num_targets_large
 
                 # print(f'small: {small_targets_ratio}')
                 # print(f'med: {medium_targets_ratio}')
