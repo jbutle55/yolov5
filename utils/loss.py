@@ -181,8 +181,8 @@ class ComputeLoss:
         # print('p')
         # print(p)
 
-        print(f'targets')
-        print(targets)
+        # print(f'targets')
+        # print(targets)
 
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
@@ -190,7 +190,7 @@ class ComputeLoss:
         gain = torch.ones(7, device=self.device)  # normalized to gridspace gain
         ai = torch.arange(na, device=self.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
-        print(f'nt: {nt}')
+        # print(f'nt: {nt}')
 
         # TODO Tune values - Non-normalized
         max_value = 0.3  # Max output value of sigmoid function (a)
@@ -226,7 +226,7 @@ class ComputeLoss:
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
 
-                print(f'r shape: {r.shape}')
+                # print(f'r shape: {r.shape}')
 
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
                 if img_size is not None:
@@ -237,7 +237,7 @@ class ComputeLoss:
                     # TODO Enable for iou inflation
                     iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
 
-                    print(f'gt areas shape: {gt_areas.shape}')
+                    # print(f'gt areas shape: {gt_areas.shape}')
                     # print(f'gt areas: {gt_areas}')
                     # print(f'iou updates shape: {iou_updates.shape}')
                     # print(f' iou updates: {iou_updates}')
@@ -259,10 +259,9 @@ class ComputeLoss:
                 t = t[j]  # filter
                 filt_targets = targets[j]
 
-                print('test')
-                print(targets.shape)
-                print(filt_targets.shape)
-
+                # print('test')
+                # print(targets.shape)
+                # print(filt_targets.shape)
 
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 1024)
                 num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1]) &
@@ -274,23 +273,25 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
-                print(f'img size: {img_size}')
-                print(f'targets shape: {targets.shape}')
-                print(f'filt targets shape: {filt_targets.shape}')
+                # print(f'img size: {img_size}')
+                # print(f'targets shape: {targets.shape}')
+                # print(f'filt targets shape: {filt_targets.shape}')
 
-                print(f'num anch small: {num_anchors_small}')
-                print(f'num anch med: {num_anchors_medium}')
-                print(f'num anch large: {num_anchors_large}')
+                # print(f'num anch small: {num_anchors_small}')
+                # print(f'num anch med: {num_anchors_medium}')
+                # print(f'num anch large: {num_anchors_large}')
 
-                print(f'num targets small: {num_targets_small}')
-                print(f'num targets med: {num_targets_medium}')
-                print(f'num targets large: {num_targets_large}')
+                # print(f'num targets small: {num_targets_small}')
+                # print(f'num targets med: {num_targets_medium}')
+                # print(f'num targets large: {num_targets_large}')
 
                 with open(utils.globals.pickle_dir, 'ab') as file:
+                    # Number of positive matches between targets and anchors
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
                     pickle.dump(num_anchors_large.item(), file)
 
+                    # Number of total targets (Number of objects * 3) * 3 layers per batch
                     pickle.dump(num_targets_small.item(), file)
                     pickle.dump(num_targets_medium.item(), file)
                     pickle.dump(num_targets_large.item(), file)
@@ -318,7 +319,5 @@ class ComputeLoss:
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
-
-        exit()  # debugging
 
         return tcls, tbox, indices, anch
