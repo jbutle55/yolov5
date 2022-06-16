@@ -1,9 +1,11 @@
 import pickle
 import numpy as np
+import sys
 
 # file = '/Users/justinbutler/Desktop/GPU_Server_Stuff/detectron_mask/anchor_log_test_ones/anchor_data.pickle'
-file = '/home/justin/Models/detectron2/mask_paper_4/anchor_data.pickle'
+# file = '/home/justin/Models/detectron2/mask_paper_4/anchor_data.pickle'
 # file = '/home/justin/Models/Yolo/mask_paper_4/anchor_data.pickle'
+file = sys.argv[1]
 print(f'Reading file: {file}')
 
 data = []
