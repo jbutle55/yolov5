@@ -62,8 +62,8 @@ large_zero_values = []
 # print(data)
 
 for item in data:
-    print(item)
-    print(f'count: {count}')
+    # print(item)
+    # print(f'count: {count}')
     if count == 0:
         small_pos_match.append(item)
         count += 1
