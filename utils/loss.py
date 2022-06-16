@@ -322,4 +322,6 @@ class ComputeLoss:
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
 
+        exit()
+
         return tcls, tbox, indices, anch
