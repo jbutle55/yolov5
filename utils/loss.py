@@ -226,6 +226,8 @@ class ComputeLoss:
                 # Matches
                 r = t[..., 4:6] / anchors[:, None]  # wh ratio
 
+                print(f'r shape: {r.shape}')
+
                 # print(f'anchors[:, None] shape: {anchors[:, None].shape}')  # 3,1,2
                 if img_size is not None:
                     # print(f'img size: {img_size}')
