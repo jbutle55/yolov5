@@ -82,6 +82,9 @@ for item in data:
         num_large_gt.append(item)
         count += 1
 
+    if count == 5:
+        count = 0
+
 # Totals
 total_pos_anchors = np.sum(small_pos_match) + np.sum(med_pos_match) + np.sum(large_pos_match)
 # Num Pos Anchors data
