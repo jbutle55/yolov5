@@ -84,31 +84,31 @@ for item in data:
         count += 1
 
     elif count == 6:
-        num_large_gt.append(item)
+        small_avg_ratio.append(item)
         count += 1
     elif count == 7:
-        num_large_gt.append(item)
+        med_avg_ratio.append(item)
         count += 1
     elif count == 8:
-        num_large_gt.append(item)
+        large_avg_ratio.append(item)
         count += 1
     elif count == 9:
-        num_large_gt.append(item)
+        small_max_ratio.append(item)
         count += 1
     elif count == 10:
-        num_large_gt.append(item)
+        med_max_ratio.append(item)
         count += 1
     elif count == 11:
-        num_large_gt.append(item)
+        large_max_ratio.append(item)
         count += 1
     elif count == 12:
-        num_large_gt.append(item)
+        small_min_ratio.append(item)
         count += 1
     elif count == 13:
-        num_large_gt.append(item)
+        med_min_ratio.append(item)
         count += 1
     elif count == 14:
-        num_large_gt.append(item)
+        large_min_ratio.append(item)
         count += 1
 
     if count == 15:
