@@ -260,6 +260,9 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
+                print(f'targets shape: {targets.shape}')
+                print(f'filt targets shape: {filt_targets.shape}')
+
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
                     pickle.dump(num_anchors_medium.item(), file)
