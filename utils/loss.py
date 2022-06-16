@@ -270,6 +270,9 @@ class ComputeLoss:
                 print(f'num anch med: {num_anchors_medium}')
                 print(f'num anch large: {num_anchors_large}')
 
+                print(f'num targets small: {num_targets_small}')
+                print(f'num targets med: {num_targets_medium}')
+                print(f'num targets large: {num_targets_large}')
 
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
