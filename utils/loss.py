@@ -275,8 +275,8 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
-                ones = torch.ones(targets.shape)
-                zeros = torch.zeros(targets.shape)
+                ones = torch.ones(targets.shape).to('cuda')
+                zeros = torch.zeros(targets.shape).to('cuda')
                 small_targets_ratio = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / nt
                 medium_targets_ratio = torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0]
