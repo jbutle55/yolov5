@@ -178,9 +178,8 @@ class ComputeLoss:
         return (lbox + lobj + lcls) * bs, torch.cat((lbox, lobj, lcls)).detach()
 
     def build_targets(self, p, targets, img_size=None):
-        print('p')
-        print(p)
-        print(p.shape)
+        # print('p')
+        # print(p)
 
         print(f'targets')
         print(targets)
