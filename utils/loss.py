@@ -254,16 +254,10 @@ class ComputeLoss:
                 # print(f'j test shape {j_test.shape}')
                 # j_comp = torch.logical_and(j, j_test)
                 # print(f'j comp: {j_comp}')
-                print(f'j values: {torch.max(r, 1 / r).max(2)[0]}')
-                print(torch.max(r, 1 / r).max(2)[0].shape)
 
                 # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
                 t = t[j]  # filter
                 filt_targets = targets[j]
-
-                # print('test')
-                print(targets.shape)
-                print(filt_targets.shape)
 
                 num_anchors_small = torch.sum(filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1] <= 1024)
                 num_anchors_medium = torch.sum((1024 < filt_targets[..., 4] * filt_targets[..., 5] * img_size[0] * img_size[1]) &
@@ -287,13 +281,24 @@ class ComputeLoss:
                                                              (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0])
                 large_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
 
-                print(f'small: {small_targets_ratio}')
-                print(f'med: {medium_targets_ratio}')
-                print(f'large: {large_targets_ratio}')
+                small_targets_min = torch.min(
+                    torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) *
+                    torch.max(r, 1 / r).max(2)[0])
+                medium_targets_min = torch.min(
+                    torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
+                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) *
+                    torch.max(r, 1 / r).max(2)[0])
+                large_targets_min = torch.min(
+                    torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) *
+                    torch.max(r, 1 / r).max(2)[0])
 
-                print(f'small: {small_targets_max}')
-                print(f'med: {medium_targets_max}')
-                print(f'large: {large_targets_max}')
+                # print(f'small: {small_targets_ratio}')
+                # print(f'med: {medium_targets_ratio}')
+                # print(f'large: {large_targets_ratio}')
+
+                print(f'small: {small_targets_min}')
+                print(f'med: {medium_targets_min}')
+                print(f'large: {large_targets_min}')
 
                 # print(f'img size: {img_size}')
                 # print(f'targets shape: {targets.shape}')
@@ -325,6 +330,10 @@ class ComputeLoss:
                     pickle.dump(small_targets_max.item(), file)
                     pickle.dump(medium_targets_max.item(), file)
                     pickle.dump(large_targets_max.item(), file)
+
+                    pickle.dump(small_targets_min.item(), file)
+                    pickle.dump(medium_targets_min.item(), file)
+                    pickle.dump(large_targets_min.item(), file)
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
