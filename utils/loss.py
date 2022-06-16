@@ -184,6 +184,8 @@ class ComputeLoss:
         gain = torch.ones(7, device=self.device)  # normalized to gridspace gain
         ai = torch.arange(na, device=self.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         targets = torch.cat((targets.repeat(na, 1, 1), ai[..., None]), 2)  # append anchor indices
+        print(f'nt: {nt}')
+
 
         # TODO Tune values - Non-normalized
         max_value = 0.3  # Max output value of sigmoid function (a)
@@ -228,7 +230,7 @@ class ComputeLoss:
                     # TODO Enable for iou inflation
                     iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
 
-                    # print(f'gt areas shape: {gt_areas.shape}')
+                    print(f'gt areas shape: {gt_areas.shape}')
                     # print(f'gt areas: {gt_areas}')
                     # print(f'iou updates shape: {iou_updates.shape}')
                     # print(f' iou updates: {iou_updates}')
@@ -260,8 +262,14 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
+                print(f'img size: {img_size}')
                 print(f'targets shape: {targets.shape}')
                 print(f'filt targets shape: {filt_targets.shape}')
+
+                print(f'num anch small: {num_anchors_small}')
+                print(f'num anch med: {num_anchors_medium}')
+                print(f'num anch large: {num_anchors_large}')
+
 
                 with open(utils.globals.pickle_dir, 'ab') as file:
                     pickle.dump(num_anchors_small.item(), file)
