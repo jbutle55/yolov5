@@ -275,16 +275,25 @@ class ComputeLoss:
                                                (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096))
                 num_targets_large = torch.sum(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096)
 
-                ones = torch.ones(targets.shape).to('cuda')
-                zeros = torch.zeros(targets.shape).to('cuda')
-                small_targets_ratio = torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) # * torch.max(r, 1 / r).max(2)[0]) / nt
-                medium_targets_ratio = torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
-                                               (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0]
-                large_targets_ratio = torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0]
+                ones = torch.ones(targets.shape[:-1]).to('cuda')
+                zeros = torch.zeros(targets.shape[:-1]).to('cuda')
+                small_targets_ratio = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_small
+                medium_targets_ratio = torch.sum(torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
+                                               (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_medium
+                large_targets_ratio = torch.sum(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0]) / num_targets_large
+
+                small_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 1024, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
+                medium_targets_max = torch.max(torch.where((1024 < targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1]) &
+                                                             (targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] <= 4096), ones, zeros) * torch.max(r, 1 / r).max(2)[0])
+                large_targets_max = torch.max(torch.where(targets[..., 4] * targets[..., 5] * img_size[0] * img_size[1] > 4096, ones, zeros) * torch.max(r, 1 / r).max(2)[0])
 
                 print(f'small: {small_targets_ratio}')
                 print(f'med: {medium_targets_ratio}')
                 print(f'large: {large_targets_ratio}')
+
+                print(f'small: {small_targets_max}')
+                print(f'med: {medium_targets_max}')
+                print(f'large: {large_targets_max}')
 
                 # print(f'img size: {img_size}')
                 # print(f'targets shape: {targets.shape}')
@@ -308,6 +317,14 @@ class ComputeLoss:
                     pickle.dump(num_targets_small.item(), file)
                     pickle.dump(num_targets_medium.item(), file)
                     pickle.dump(num_targets_large.item(), file)
+
+                    pickle.dump(small_targets_ratio.item(), file)
+                    pickle.dump(medium_targets_ratio.item(), file)
+                    pickle.dump(large_targets_ratio.item(), file)
+
+                    pickle.dump(small_targets_max.item(), file)
+                    pickle.dump(medium_targets_max.item(), file)
+                    pickle.dump(large_targets_max.item(), file)
 
                 # Offsets
                 gxy = t[:, 2:4]  # grid xy
