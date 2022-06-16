@@ -180,6 +180,7 @@ class ComputeLoss:
     def build_targets(self, p, targets, img_size=None):
         print('p')
         print(p)
+        print(p.shape)
 
         print(f'targets')
         print(targets)
