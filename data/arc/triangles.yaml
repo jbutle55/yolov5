@@ -8,5 +8,5 @@ val: /home/justin.butler1/Data/shapes/Triangles_1500imgs/no_gauss/images  # val 
 
 # Classes
 nc: 5  # number of classes
-names: ['circle', 'triangle', 'ellipse', 'rectangle', 'square']  # class names
+names: ['triangle', 'circle', 'ellipse', 'rectangle', 'square']  # class names
 
