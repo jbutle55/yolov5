@@ -234,7 +234,6 @@ class ComputeLoss:
                     gt_areas = ((targets[..., 4] * img_size[0]) * (targets[..., 5] * img_size[1])).unsqueeze(-1)
 
                     # Gaussian Function
-                    # TODO Enable for iou inflation
                     iou_updates = 1 + (max_value * torch.exp(-torch.square(gt_areas - x_o) / (2 * std ** 2)))
 
                     # print(f'gt areas shape: {gt_areas.shape}')
@@ -244,7 +243,7 @@ class ComputeLoss:
                     # print(f'r: {r}')
                     # print(f'r shape: {r.shape}')
 
-                    r = r * iou_updates  # TODO Disable for no iou/ratio inflation
+                    # r = r * iou_updates  # TODO Disable for no iou/ratio inflation
                     # print(f'r inflate shape: {r_inflate.shape}')
                     # print(f'r inflate: {r_inflate}')
 
