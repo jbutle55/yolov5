@@ -7,6 +7,6 @@ train: [/home/justin.butler1/Data/shapes/Triangles_7500imgs_mod4/images]  # trai
 val: /home/justin.butler1/Data/shapes/Triangles_1500imgs/no_gauss/images  # val images (relative to 'path')
 
 # Classes
-nc: 5  # number of classes
-names: ['triangle', 'circle', 'ellipse', 'rectangle', 'square']  # class names
+nc: 1  # number of classes
+names: ['triangle']  # class names
 
