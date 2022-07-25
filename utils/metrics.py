@@ -168,12 +168,19 @@ class ConfusionMatrix:
     def tp_fp(self):
         tp = self.matrix.diagonal()  # true positives
         fp = self.matrix.sum(1) - tp  # false positives
-        # fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
+        print(f'Number of TP: {tp} - Number of FP: {fp}')
+        fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
+        print(f'Number of FN: {fn}')
         return tp[:-1], fp[:-1]  # remove background class
 
     def plot(self, normalize=True, save_dir='', names=()):
         try:
             import seaborn as sn
+
+            if normalize:
+                plot_name = 'normalized'
+            else:
+                plot_name = 'count'
 
             array = self.matrix / ((self.matrix.sum(0).reshape(1, -1) + 1E-9) if normalize else 1)  # normalize columns
             array[array < 0.005] = np.nan  # don't annotate (would appear as 0.00)
@@ -196,7 +203,7 @@ class ConfusionMatrix:
                            yticklabels=names + ['background FN'] if labels else "auto").set_facecolor((1, 1, 1))
             fig.axes[0].set_xlabel('True')
             fig.axes[0].set_ylabel('Predicted')
-            fig.savefig(Path(save_dir) / 'confusion_matrix.png', dpi=250)
+            fig.savefig(Path(save_dir) / f'confusion_matrix_{plot_name}.png', dpi=250)
             plt.close()
         except Exception as e:
             print(f'WARNING: ConfusionMatrix plot failure: {e}')
