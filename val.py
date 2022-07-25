@@ -297,7 +297,7 @@ def run(
 
     # Plots
     if plots:
-        confusion_matrix.plot(save_dir=save_dir, names=list(names.values()))
+        confusion_matrix.plot(save_dir=save_dir, names=list(names.values()), normalize=False)  # Change normalize to true for percentages
         callbacks.run('on_val_end')
 
     # Save JSON
