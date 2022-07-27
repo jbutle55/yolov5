@@ -235,10 +235,7 @@ def run(
                 if nl:
                     stats.append((correct, *torch.zeros((2, 0), device=device), labels[:, 0]))
                     if plots:
-                        tbox = xywh2xyxy(labels[:, 1:5])  # target boxes
-                        scale_coords(im[si].shape[1:], tbox, shape, shapes[si][1])  # native-space labels
-                        labelsn = torch.cat((labels[:, 0:1], tbox), 1)  # native-space labels
-                        confusion_matrix.process_batch_no_detections(labelsn)
+                        confusion_matrix.process_batch_no_detections(labels[:, 0])
                 continue
 
             # Predictions
