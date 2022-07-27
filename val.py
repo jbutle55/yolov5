@@ -157,8 +157,8 @@ def run(
     model.eval()
     cuda = device.type != 'cpu'
     is_coco = isinstance(data.get('val'), str) and data['val'].endswith('coco/val2017.txt')  # COCO dataset
-    is_coco = True
-    # is_coco = False
+    # is_coco = True
+    is_coco = False
     nc = 1 if single_cls else int(data['nc'])  # number of classes
     iouv = torch.linspace(0.5, 0.95, 10, device=device)  # iou vector for mAP@0.5:0.95
     niou = iouv.numel()
@@ -234,6 +234,11 @@ def run(
             if len(pred) == 0:
                 if nl:
                     stats.append((torch.zeros(0, niou, dtype=torch.bool), torch.Tensor(), torch.Tensor(), tcls))
+                    if plots:
+                        tbox = xywh2xyxy(labels[:, 1:5])  # target boxes
+                        scale_coords(im[si].shape[1:], tbox, shape, shapes[si][1])  # native-space labels
+                        labelsn = torch.cat((labels[:, 0:1], tbox), 1)  # native-space labels
+                        confusion_matrix.process_batch_no_detections(labelsn)
                 continue
 
             # Predictions
