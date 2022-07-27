@@ -237,7 +237,7 @@ class ComputeLoss:
                     # print(f'r: {r}')
                     # print(f'r shape: {r.shape}')
 
-                    # r = r * iou_updates  # TODO Disable for no iou/ratio inflation
+                    r = r * iou_updates  # TODO Disable for no iou/ratio inflation
                     # print(f'r inflate shape: {r_inflate.shape}')
                     # print(f'r inflate: {r_inflate}')
 
