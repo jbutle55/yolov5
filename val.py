@@ -184,7 +184,7 @@ def run(
                                        prefix=colorstr(f'{task}: '))[0]
 
     seen = 0
-    confusion_matrix = ConfusionMatrix(nc=nc)
+    confusion_matrix = ConfusionMatrix(nc=nc, conf=0.5, iou_thres=0.5)
     names = {k: v for k, v in enumerate(model.names if hasattr(model, 'names') else model.module.names)}
     # class_map = coco80_to_coco91_class() if is_coco else list(range(1000))
     class_map = list(range(1000))
@@ -306,9 +306,10 @@ def run(
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
         # anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
         # anno_json = '/home/justin.butler1/Data/shapes/Triangles_1500imgs/shapes.json'
-        anno_json = '/home/justin.butler1/Data/shapes/Shapes_7500imgs_mod4/shapes.json'
+        # anno_json = '/home/justin.butler1/Data/shapes/Shapes_7500imgs_mod4/shapes.json'
         # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
         # anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
+        anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/aerial-cars-private/aerial_yolo/cars_only/labels/aerial_valid.json'
         print(f'Using annotation file: {anno_json}')
 
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json

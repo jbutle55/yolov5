@@ -201,7 +201,9 @@ class ConfusionMatrix:
     def tp_fp(self):
         tp = self.matrix.diagonal()  # true positives
         fp = self.matrix.sum(1) - tp  # false positives
-        print(f'Number of TP: {tp} - Number of FP: {fp}')
+        print(f'Confidence threshold: {self.conf} - IoU: {self.iou_thres}')
+        print(f'Number of TP: {tp}')
+        print(f'Number of FP: {fp}')
         fn = self.matrix.sum(0) - tp  # false negatives (missed detections)
         print(f'Number of FN: {fn}')
         return tp[:-1], fp[:-1]  # remove background class
@@ -232,11 +234,11 @@ class ConfusionMatrix:
                            fmt='.2f',
                            square=True,
                            vmin=0.0,
-                           xticklabels=names + ['background FP'] if labels else "auto",
-                           yticklabels=names + ['background FN'] if labels else "auto").set_facecolor((1, 1, 1))
+                           xticklabels=names + ['background'] if labels else "auto",
+                           yticklabels=names + ['background'] if labels else "auto").set_facecolor((1, 1, 1))
             fig.axes[0].set_xlabel('True')
             fig.axes[0].set_ylabel('Predicted')
-            fig.savefig(Path(save_dir) / f'confusion_matrix_{plot_name}.png', dpi=250)
+            fig.savefig(Path(save_dir) / f'confusion_matrix_{plot_name}_conf_{self.conf}_iou_{self.iou_thres}.png', dpi=250)
             plt.close()
         except Exception as e:
             print(f'WARNING: ConfusionMatrix plot failure: {e}')
