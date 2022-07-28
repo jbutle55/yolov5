@@ -670,4 +670,7 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+
+    print(f'opt: {opt}')
+
     main(opt)
