@@ -305,11 +305,13 @@ def run(
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
         # anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
-        # anno_json = '/home/justin.butler1/Data/shapes/Triangles_1500imgs/shapes.json'
+        anno_json = '/home/justin.butler1/Data/shapes/Triangles_1500imgs/shapes.json'
         # anno_json = '/home/justin.butler1/Data/shapes/Shapes_7500imgs_mod4/shapes.json'
         # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
         # anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
-        anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/aerial-cars-private/aerial_yolo/cars_only/labels/aerial_valid.json'
+        # anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/aerial-cars-private/aerial_yolo/cars_only/labels/aerial_valid.json'
+        # anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/UAV-Vehicle-Detection-Dataset/cars_only/dataset4/dataset4_x1y1wh.json'
+        # anno_json = '/Users/justinbutler/Desktop/school/Calgary/ML_Work/Datasets/Shapes/Triangles_1500_mod4/shapes.json'
         print(f'Using annotation file: {anno_json}')
 
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
