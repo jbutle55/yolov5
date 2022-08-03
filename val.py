@@ -307,7 +307,7 @@ def run(
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
         # anno_json = str(Path(data.get('path', '../coco')) / 'annotations/instances_val2017.json')  # annotations json
         # anno_json = '/home/justin.butler1/Data/coco/annotations/instances_val2017.json'
-        anno_json = '/home/justin.butler1/Data/shapes/Triangles_1500imgs/shapes_single_cat.json'
+        anno_json = '/home/justin.butler1/Data/shapes/Shapes_1500imgs/shapes.json'
         # anno_json = '/home/justin.butler1/Data/shapes/Shapes_7500imgs_mod4/shapes.json'
         # anno_json = '/home/justin.butler1/Data/uav-detect/cars-only/dataset4/dataset4_x1y1wh.json'
         # anno_json = '/home/justin.butler1/Data/aerial-cars/cars-only/labels/aerial_valid.json'  # Remove images from pathname
